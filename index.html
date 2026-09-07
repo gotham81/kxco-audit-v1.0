@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KXCO — Post-Quantum Trust Infrastructure Audit</title>
   
-  <!-- Fonts: Source Sans 3 (Pro) & Editorial Serif (Prato / Cormorant Garamond fallback) -->
+  <!-- Fonts: Source Sans 3 (Pro), DM Sans, Cormorant Garamond, Space Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
     @font-face {
@@ -23,15 +23,21 @@
       --bg: #0A0A0B;
       --panel: #111113;
       --border: rgba(255, 255, 255, 0.08);
-      --border-focus: rgba(0, 229, 255, 0.4);
       --text-main: #FFFFFF;
       --text-muted: #8E8E93;
-      --accent: #00E5FF;
+      
+      /* KXCO Signature Parchment Accent */
+      --accent: #E8DCBE;
+      --accent-muted: rgba(232, 220, 190, 0.65);
+      --accent-glow: rgba(232, 220, 190, 0.18);
+      --warning: #FF453A;
+      --success: #30D158;
       
       /* Typography System */
       --font-headline: 'Prato', 'Cormorant Garamond', 'Didot', 'Playfair Display', serif;
       --font-body: 'Source Sans 3', 'Source Sans Pro', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       --font-mono: 'Space Mono', "SFMono-Regular", Consolas, Menlo, monospace;
+      --font-article: 'DM Sans', -apple-system, sans-serif;
     }
 
     * {
@@ -54,18 +60,19 @@
     /* CVB Fullscreen Slide Architecture */
     section.slide {
       height: 100vh;
-      min-height: 640px;
+      min-height: 700px;
       width: 100%;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end; /* Bottom-aligned layout */
-      align-items: flex-start;   /* Left-aligned layout */
+      justify-content: flex-end;
+      align-items: flex-start;
       position: relative;
-      padding: 5rem 6vw 5rem 6vw;
+      padding: 4.5rem 6vw 4.5rem 6vw;
       border-bottom: 1px solid var(--border);
       scroll-snap-align: start;
       scroll-snap-stop: always;
       overflow: hidden;
+      background-color: var(--bg);
     }
 
     /* Content Wrapper (Bottom-Left Placement) */
@@ -78,10 +85,53 @@
       align-items: flex-start;
       justify-content: flex-end;
       z-index: 2;
-      margin-bottom: 3.5rem; /* Precise spacing above the bottom navigation arrow */
+      margin-bottom: 3.5rem;
     }
 
-    /* Logo Styling (Immaculately placed above the headline on Slide 0) */
+    /* Slide 0 Top-Right Typewriter Stream */
+    .hero-typewriter-container {
+      position: absolute;
+      top: 4.5rem;
+      right: 6vw;
+      max-width: 460px;
+      text-align: right;
+      z-index: 5;
+    }
+
+    .typewriter-label {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.35rem;
+      display: block;
+    }
+
+    .typewriter-text {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      display: inline;
+    }
+
+    .typewriter-cursor {
+      display: inline-block;
+      width: 6px;
+      height: 13px;
+      background: var(--accent);
+      margin-left: 3px;
+      vertical-align: middle;
+      animation: blinkCursor 0.8s infinite;
+    }
+
+    @keyframes blinkCursor {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+
+    /* Logo Styling (Slide 0) */
     .brand-logo-container {
       margin-bottom: 2rem;
       display: inline-flex;
@@ -114,10 +164,10 @@
       margin-bottom: 1rem;
     }
 
-    /* CVB Headlines (Prato / Light Serif) */
+    /* CVB Headlines (Prato / Light Serif 300) */
     h1 {
       font-family: var(--font-headline);
-      font-size: clamp(2.75rem, 6.5vw, 4.5rem);
+      font-size: clamp(2.3rem, 5.5vw, 4.25rem);
       font-weight: 300;
       letter-spacing: -0.02em;
       line-height: 1.08;
@@ -125,17 +175,17 @@
       margin-bottom: 1.25rem;
     }
 
-    /* Subheadline (Source Sans Pro / 300) */
+    /* Subheadline (Source Sans Pro 300) */
     .subheadline {
       font-family: var(--font-body);
-      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      font-size: clamp(0.95rem, 1.6vw, 1.15rem);
       font-weight: 300;
       color: var(--text-muted);
       line-height: 1.55;
-      max-width: 680px;
+      max-width: 620px;
     }
 
-    /* Bottom Left CVB Arrow (Static with subtle hover glow) */
+    /* Bottom Left Navigation Arrow */
     .down-arrow {
       position: absolute;
       bottom: 3rem;
@@ -151,7 +201,7 @@
       cursor: pointer;
       text-decoration: none;
       transition: all 0.3s ease;
-      z-index: 3;
+      z-index: 5;
     }
 
     .down-arrow svg {
@@ -163,8 +213,8 @@
     .down-arrow:hover {
       border-color: var(--accent);
       color: var(--accent);
-      background: rgba(0, 229, 255, 0.05);
-      box-shadow: 0 0 12px rgba(0, 229, 255, 0.2);
+      background: var(--accent-glow);
+      box-shadow: 0 0 14px var(--accent-glow);
     }
 
     .down-arrow:hover svg {
@@ -184,7 +234,7 @@
       text-align: right;
       color: var(--text-muted);
       opacity: 0.55;
-      z-index: 3;
+      z-index: 5;
     }
 
     .agency-stamp span {
@@ -196,26 +246,1076 @@
       font-weight: 600;
     }
 
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-      section.slide {
-        padding: 4rem 1.75rem 4rem 1.75rem;
+    /* ================================================================= */
+    /* DUAL-GRID CONTAINER: LEFT BOTTOM ANCHORED, RIGHT ELEVATED         */
+    /* ================================================================= */
+    .asset-dual-container {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: end;
+      gap: 3.5rem;
+      width: 100%;
+      max-width: 1320px;
+      height: calc(100vh - 9rem);
+      margin-bottom: 3.5rem;
+      z-index: 2;
+    }
+
+    .asset-narrative-bottom {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      text-align: left;
+      align-self: end;
+      margin-bottom: 0;
+    }
+
+    .asset-content-elevated {
+      align-self: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    /* ================================================================= */
+    /* ASSET A: STRATEGIC TENSION & iPHONE 17                           */
+    /* ================================================================= */
+    .device-stage {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 2rem;
+      width: 100%;
+    }
+
+    .iphone-17-frame {
+      position: relative;
+      width: 250px;
+      height: 490px;
+      background: #141416;
+      border-radius: 42px;
+      padding: 10px;
+      box-shadow: 
+        0 0 0 1px #2C2C30,
+        0 0 0 3px #18181B,
+        0 24px 60px rgba(0, 0, 0, 0.7),
+        0 0 30px rgba(232, 220, 190, 0.05);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .dynamic-island {
+      position: absolute;
+      top: 17px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 76px;
+      height: 20px;
+      background: #000000;
+      border-radius: 12px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 7px;
+    }
+
+    .dynamic-island .camera {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #09090D;
+      border: 1px solid #1A1A22;
+    }
+
+    .dynamic-island .sensor {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #060609;
+    }
+
+    .iphone-screen {
+      width: 100%;
+      height: 100%;
+      background: #E8DCBE;
+      border-radius: 34px;
+      overflow: hidden;
+      position: relative;
+      color: #0B0A08;
+    }
+
+    .article-scroll-track {
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 38px 12px 20px 12px;
+      animation: simulatedScroll 12s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    }
+
+    @keyframes simulatedScroll {
+      0%, 40% { transform: translateY(0); }
+      50%, 90% { transform: translateY(-205px); }
+      100% { transform: translateY(0); }
+    }
+
+    .mock-art-header {
+      border-bottom: 1px solid rgba(11,10,8,0.12);
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+    }
+
+    .mock-art-brand {
+      font-family: var(--font-headline);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: #0B0A08;
+    }
+
+    .mock-art-title {
+      font-family: var(--font-headline);
+      font-size: 13px;
+      line-height: 1.25;
+      font-weight: 600;
+      margin: 6px 0;
+      color: #0B0A08;
+    }
+
+    .mock-art-byline {
+      font-family: var(--font-article);
+      font-size: 8px;
+      color: rgba(11,10,8,0.65);
+      margin-bottom: 8px;
+    }
+
+    .mock-claude-box {
+      background: rgba(11, 10, 8, 0.04);
+      border: 1px solid rgba(11, 10, 8, 0.18);
+      border-radius: 7px;
+      padding: 8px;
+      margin-bottom: 12px;
+    }
+
+    .mock-claude-tag {
+      font-family: var(--font-article);
+      font-size: 7.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(11,10,8,0.85);
+      margin-bottom: 4px;
+    }
+
+    .mock-claude-body {
+      font-family: var(--font-article);
+      font-size: 7.5px;
+      line-height: 1.35;
+      color: rgba(11,10,8,0.7);
+    }
+
+    .mock-provenance-box {
+      background: rgba(239, 230, 204, 0.95);
+      border: 1px solid rgba(11, 10, 8, 0.2);
+      border-radius: 7px;
+      padding: 8px;
+      margin-top: 14px;
+    }
+
+    .mock-provenance-tag {
+      font-family: var(--font-mono);
+      font-size: 7.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #0B0A08;
+      margin-bottom: 6px;
+    }
+
+    .mock-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-family: var(--font-mono);
+      font-size: 6.8px;
+      background: rgba(11,10,8,0.06);
+      border: 1px solid rgba(11,10,8,0.18);
+      padding: 2px 5px;
+      border-radius: 4px;
+      margin-bottom: 4px;
+      color: #0B0A08;
+      font-weight: 600;
+    }
+
+    .mock-badge .dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #34C759;
+    }
+
+    .mock-hash {
+      font-family: var(--font-mono);
+      font-size: 6px;
+      color: rgba(11,10,8,0.55);
+      line-height: 1.3;
+      word-break: break-all;
+    }
+
+    .callout-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .callout-node {
+      position: relative;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      text-align: left;
+      opacity: 0.35;
+      transform: scale(0.98);
+      transition: all 0.5s ease;
+    }
+
+    .callout-node .node-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 0.35rem;
+      display: block;
+      color: var(--accent);
+    }
+
+    .callout-node .node-desc {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 300;
+      line-height: 1.45;
+      color: var(--text-muted);
+    }
+
+    .callout-node.phase-1-active { animation: calloutPhase1 12s infinite; }
+    .callout-node.phase-2-active { animation: calloutPhase2 12s infinite; }
+
+    @keyframes calloutPhase1 {
+      0%, 40% {
+        opacity: 1;
+        transform: scale(1);
+        border-color: var(--accent);
+        background: rgba(232, 220, 190, 0.04);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
       }
-      .brand-logo {
-        width: 56px;
-        height: 56px;
-        border-radius: 12px;
+      45%, 100% {
+        opacity: 0.35;
+        transform: scale(0.98);
+        border-color: var(--border);
+        background: var(--panel);
+        box-shadow: none;
+      }
+    }
+
+    @keyframes calloutPhase2 {
+      0%, 45% {
+        opacity: 0.35;
+        transform: scale(0.98);
+        border-color: var(--border);
+        background: var(--panel);
+        box-shadow: none;
+      }
+      50%, 90% {
+        opacity: 1;
+        transform: scale(1);
+        border-color: var(--accent);
+        background: rgba(232, 220, 190, 0.04);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      }
+      95%, 100% {
+        opacity: 0.35;
+        transform: scale(0.98);
+        border-color: var(--border);
+        background: var(--panel);
+        box-shadow: none;
+      }
+    }
+
+    /* ================================================================= */
+    /* ASSET B: ECOSYSTEM MAPPING SLEEK MATRIX                           */
+    /* ================================================================= */
+    .asset-b-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      width: 100%;
+      max-width: 1200px;
+      margin-bottom: 3.5rem;
+      z-index: 2;
+    }
+
+    .matrix-wrapper {
+      width: 100%;
+      margin-top: 1.75rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+
+    .matrix-table thead tr {
+      background: rgba(232, 220, 190, 0.03);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .matrix-table th {
+      padding: 1.1rem 1.4rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .matrix-table tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: all 0.25s ease;
+      cursor: default;
+    }
+
+    .matrix-table tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    .matrix-table tbody tr:hover {
+      background: rgba(232, 220, 190, 0.04);
+    }
+
+    .matrix-table td {
+      padding: 1.25rem 1.4rem;
+      color: var(--text-muted);
+      font-weight: 300;
+      line-height: 1.5;
+    }
+
+    .matrix-table td.entity-col {
+      color: var(--text-main);
+      font-weight: 400;
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+
+    .matrix-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background: rgba(232, 220, 190, 0.08);
+      border: 1px solid rgba(232, 220, 190, 0.22);
+      color: var(--accent);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    /* ================================================================= */
+    /* ASSET C: SECURITY AUDIT VULNERABILITY CONSOLE                    */
+    /* ================================================================= */
+    .asset-c-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      width: 100%;
+      max-width: 1100px;
+      margin-bottom: 3.5rem;
+      z-index: 2;
+    }
+
+    .vuln-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.15rem;
+      width: 100%;
+      margin-top: 1.5rem;
+    }
+
+    .vuln-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.35rem 1.6rem;
+      transition: all 0.3s ease;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .vuln-card:hover {
+      border-color: rgba(232, 220, 190, 0.25);
+      background: rgba(232, 220, 190, 0.02);
+      transform: translateY(-2px);
+    }
+
+    .vuln-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.65rem;
+    }
+
+    .vuln-badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--warning);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .vuln-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--warning);
+      box-shadow: 0 0 8px var(--warning);
+    }
+
+    .vuln-endpoint {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    .vuln-desc {
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      color: var(--text-main);
+      font-weight: 300;
+      line-height: 1.45;
+      margin-bottom: 0.75rem;
+    }
+
+    .vuln-remediation {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: var(--accent);
+      background: rgba(232, 220, 190, 0.06);
+      border: 1px solid rgba(232, 220, 190, 0.15);
+      padding: 0.45rem 0.8rem;
+      border-radius: 4px;
+      display: inline-block;
+      letter-spacing: 0.02em;
+    }
+
+    /* ================================================================= */
+    /* ASSET D: 3-COLUMN CINEMATIC VIDEO SHOWCASE                       */
+    /* ================================================================= */
+    .asset-d-3col {
+      display: grid;
+      grid-template-columns: 1.1fr auto 1fr;
+      align-items: end;
+      gap: 3rem;
+      width: 100%;
+      max-width: 1360px;
+      height: calc(100vh - 9rem);
+      margin-bottom: 3.5rem;
+      z-index: 2;
+    }
+
+    .video-proof-points {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      width: 100%;
+      max-width: 360px;
+      align-self: center;
+      margin-bottom: 2rem;
+    }
+
+    .proof-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      border-left: 2px solid var(--accent);
+      padding-left: 1.25rem;
+      background: rgba(255, 255, 255, 0.015);
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .proof-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .proof-desc {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 300;
+      line-height: 1.45;
+    }
+
+    .video-player-stage {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      align-self: center;
+      margin-bottom: 2rem;
+    }
+
+    .iphone-video-screen {
+      width: 100%;
+      height: 100%;
+      background: #000000 !important;
+      background-color: #000000 !important;
+      border-radius: 34px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .iphone-video-screen video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #000000 !important;
+      background-color: #000000 !important;
+    }
+
+    /* Clean Subtle Outline Play Button */
+    .video-control-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      z-index: 8;
+    }
+
+    .video-control-overlay.is-playing {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .iphone-video-screen:hover .video-control-overlay.is-playing {
+      opacity: 1;
+      pointer-events: auto;
+      background: rgba(0, 0, 0, 0.45);
+    }
+
+    .play-btn-outline {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(232, 220, 190, 0.85);
+      background: rgba(10, 10, 11, 0.55);
+      backdrop-filter: blur(10px);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .iphone-video-screen:hover .play-btn-outline {
+      transform: scale(1.1);
+      border-color: var(--accent);
+      background: rgba(232, 220, 190, 0.15);
+      box-shadow: 0 0 24px rgba(232, 220, 190, 0.4);
+    }
+
+    .video-error-msg {
+      display: none;
+      position: absolute;
+      bottom: 20px;
+      left: 12px;
+      right: 12px;
+      background: rgba(0,0,0,0.85);
+      border: 1px solid var(--warning);
+      color: #FFF;
+      font-family: var(--font-mono);
+      font-size: 7px;
+      padding: 6px;
+      border-radius: 4px;
+      text-align: center;
+      z-index: 10;
+    }
+
+    /* ================================================================= */
+    /* ASSET E: ZERO-TRUST EMAIL ROUTING STACK                          */
+    /* ================================================================= */
+    .email-flow-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 1.15rem;
+      width: 100%;
+      max-width: 540px;
+    }
+
+    .email-flow-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.35rem 1.5rem;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .email-flow-card:hover {
+      border-color: rgba(232, 220, 190, 0.35);
+      background: rgba(232, 220, 190, 0.02);
+      transform: translateX(4px);
+    }
+
+    .flow-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .flow-step-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .flow-status-pill {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(48, 209, 88, 0.1);
+      border: 1px solid rgba(48, 209, 88, 0.3);
+      color: var(--success);
+    }
+
+    .flow-card-desc {
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      font-weight: 300;
+      line-height: 1.5;
+    }
+
+    /* ================================================================= */
+    /* ASSET F: INTERACTIVE PQC MIGRATION CALCULATOR                    */
+    /* ================================================================= */
+    .calc-console {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 540px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .calc-group {
+      margin-bottom: 1.25rem;
+      text-align: left;
+    }
+
+    .calc-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .calc-select {
+      width: 100%;
+      background: #18181B;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s ease;
+      cursor: pointer;
+    }
+
+    .calc-select:focus {
+      border-color: var(--accent);
+    }
+
+    .calc-range-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .calc-range {
+      flex: 1;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+
+    .calc-year-display {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: var(--text-main);
+      font-weight: 600;
+      min-width: 48px;
+    }
+
+    .calc-result-dial {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .dial-meter {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .dial-score {
+      font-family: var(--font-mono);
+      font-size: 2.25rem;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--warning);
+      transition: color 0.3s ease;
+    }
+
+    .dial-status {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--warning);
+      margin-top: 0.35rem;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .dial-benchmark {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-align: right;
+      max-width: 220px;
+      line-height: 1.4;
+    }
+
+    /* ================================================================= */
+    /* ASSET G: SENTINEL BASTION TRUST SIMULATION                       */
+    /* ================================================================= */
+    .sentinel-terminal {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      width: 100%;
+      max-width: 540px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+      text-align: left;
+    }
+
+    .terminal-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.85rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .terminal-title {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .terminal-live-dot {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--success);
+    }
+
+    .terminal-live-dot::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 8px var(--success);
+    }
+
+    .domain-input-box {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .domain-input {
+      flex: 1;
+      background: #18181B;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      outline: none;
+    }
+
+    .domain-btn {
+      background: var(--accent);
+      color: #0B0A08;
+      border: none;
+      padding: 0.75rem 1.25rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .domain-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .sim-output-box {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 6px;
+      padding: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      min-height: 120px;
+    }
+
+    .sim-highlight {
+      color: var(--warning);
+    }
+
+    .sim-verified {
+      color: var(--accent);
+    }
+
+    /* ================================================================= */
+    /* SLIDE H: PROPOSAL INQUIRY (PURE SEAMLESS BACKGROUND)             */
+    /* ================================================================= */
+    section.proposal-slide {
+      height: 100vh;
+      min-height: 600px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      padding: 4rem 6vw;
+      text-align: center;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      background-color: var(--bg) !important;
+      border: none !important;
+      border-bottom: none !important;
+      box-shadow: none !important;
+    }
+
+    .proposal-content {
+      max-width: 680px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+    }
+
+    .proposal-meta {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.25rem;
+    }
+
+    .proposal-title {
+      font-family: var(--font-headline);
+      font-size: clamp(1.8rem, 3.8vw, 2.75rem);
+      font-weight: 300;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      color: var(--text-main);
+      margin-bottom: 2rem;
+      background: transparent !important;
+    }
+
+    .proposal-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      align-items: center;
+      background: transparent !important;
+    }
+
+    .proposal-link-item {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent !important;
+    }
+
+    .proposal-link-item:hover {
+      opacity: 0.75;
+      transform: translateY(-1px);
+    }
+
+    /* Mobile Responsive Overrides */
+    @media (max-width: 1024px) {
+      section.slide, section.proposal-slide {
+        height: auto;
+        min-height: 100vh;
+        padding: 5rem 1.75rem 4.5rem 1.75rem;
+      }
+      .asset-dual-container, .asset-d-3col {
+        grid-template-columns: 1fr;
+        height: auto;
+        gap: 2.5rem;
+        margin-bottom: 2rem;
+      }
+      .hero-typewriter-container {
+        position: relative;
+        top: 0;
+        right: 0;
+        max-width: 100%;
+        text-align: left;
+        margin-bottom: 2rem;
+      }
+      .video-proof-points {
+        max-width: 100%;
+        align-self: auto;
+      }
+      .device-stage, .video-player-stage, .asset-content-elevated {
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        align-self: auto;
+      }
+      .iphone-17-frame {
+        width: 240px;
+        height: 470px;
+      }
+      .callout-stack, .calc-console, .sentinel-terminal, .email-flow-stack {
+        max-width: 100%;
       }
       .down-arrow {
-        bottom: 2rem;
+        bottom: 1.5rem;
         left: 1.75rem;
       }
       .agency-stamp {
         right: 1.75rem;
-        bottom: 2rem;
+        bottom: 1.5rem;
       }
       .slide-wrapper {
-        margin-bottom: 3rem;
+        margin-bottom: 2rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .matrix-table thead {
+        display: none;
+      }
+      .matrix-table, .matrix-table tbody, .matrix-table tr, .matrix-table td {
+        display: block;
+        width: 100%;
+      }
+      .matrix-table tr {
+        padding: 1.25rem 1rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .matrix-table td {
+        padding: 0.4rem 0;
+      }
+      .matrix-table td::before {
+        content: attr(data-label);
+        display: block;
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--accent-muted);
+        margin-bottom: 0.2rem;
+      }
+      .matrix-table td.entity-col::before {
+        display: none;
+      }
+      .vuln-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.35rem;
       }
     }
   </style>
@@ -223,11 +1323,16 @@
 <body>
 
   <!-- ================================================================= -->
-  <!-- SLIDE 0: HERO (TITLE BANNER)                                     -->
+  <!-- SLIDE 0: HERO BANNER                                             -->
   <!-- ================================================================= -->
   <section class="slide" id="hero">
+    
+    <div class="hero-typewriter-container">
+      <span class="typewriter-label">System Scope</span>
+      <div class="typewriter-text" id="typewriter-output"></div><span class="typewriter-cursor"></span>
+    </div>
+
     <div class="slide-wrapper">
-      <!-- KXCO Official Logo: Positioned directly above the headline block -->
       <div class="brand-logo-container">
         <img src="https://media.licdn.com/dms/image/v2/D4E0BAQGCLeUyW9Yj3A/company-logo_200_200/B4EZwKNjkUHoAM-/0/1769697852604/kxco_logo?e=1789603200&v=beta&t=rzDOjycZhEC8APyosB8vEUmHRY35-Uy7xri_R7HfDFI" 
              alt="KXCO Official Logo" 
@@ -239,14 +1344,12 @@
       <p class="subheadline">An operational audit, competitive mapping, and brand authority framework for the human–AI economy.</p>
     </div>
     
-    <!-- Static Bottom-Left Navigation Arrow -->
     <a href="#claude-tension" class="down-arrow" aria-label="Scroll to next section">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
         <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </a>
 
-    <!-- Bottom-Right Goni Agency Stamp -->
     <div class="agency-stamp">
       <span class="logo-line">Goni Agency</span>
       <span>goniagency.com</span>
@@ -255,13 +1358,84 @@
   </section>
 
   <!-- ================================================================= -->
-  <!-- SLIDE A: THE CLAUDE TENSION                                       -->
+  <!-- SLIDE A: ASSET A // STRATEGIC TENSION                             -->
   <!-- ================================================================= -->
   <section class="slide" id="claude-tension">
-    <div class="slide-wrapper">
-      <div class="slide-meta">Asset A // Strategic Tension</div>
-      <h1>The Abundance of Rented Weights</h1>
-      <p class="subheadline">Evaluating the strategic boundary between commoditized generative outputs and cryptographically verified provenance.</p>
+    <div class="asset-dual-container">
+      
+      <div class="asset-narrative-bottom">
+        <div class="slide-meta">Asset A // Strategic Tension</div>
+        <h1>The Abundance of Rented Weights</h1>
+        <p class="subheadline">Evaluating the strategic boundary between commoditized generative outputs and cryptographically verified provenance.</p>
+      </div>
+
+      <div class="asset-content-elevated">
+        <div class="device-stage">
+          
+          <div class="iphone-17-frame">
+            <div class="dynamic-island">
+              <div class="sensor"></div>
+              <div class="camera"></div>
+            </div>
+
+            <div class="iphone-screen">
+              <div class="article-scroll-track">
+                
+                <div class="mock-art-header">
+                  <div class="mock-art-brand">Live Trading News</div>
+                  <div class="mock-art-title">KXCO Put Its Quantum Cryptography in Public</div>
+                  <div class="mock-art-byline">By Shayne Heffernan · August 31, 2026</div>
+                </div>
+
+                <div class="mock-claude-box">
+                  <div class="mock-claude-tag">
+                    Key Takeaways · Written by Claude
+                  </div>
+                  <div class="mock-claude-body">
+                    A quantum computer breaks RSA and elliptic curve cryptography by finding period lengths in cyclic groups...
+                  </div>
+                </div>
+
+                <div style="width:100%; height:32px; background:rgba(11,10,8,0.06); border-radius:4px; margin: 10px 0; display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:6px; color:rgba(11,10,8,0.4);">
+                  [ SENTINEL AUDIT RECORD ]
+                </div>
+
+                <div class="mock-provenance-box">
+                  <div class="mock-provenance-tag">Provenance</div>
+                  <div class="mock-badge">
+                    <span class="dot"></span> QUANTUM-SIGNED · ML-DSA-65
+                  </div>
+                  <div class="mock-badge">
+                    <span class="dot"></span> VERIFIED ON CHAIN · BLOCK 3394261
+                  </div>
+                  <div class="mock-hash">
+                    kid: 6b8e4750027cfe89<br>
+                    envelope: 8d5e05b74747bc9a...<br>
+                    tx: 0x5ccbd9932e0854119...
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="callout-stack">
+            
+            <div class="callout-node phase-1-active">
+              <span class="node-tag">01 // Rented Weights</span>
+              <p class="node-desc">Unedited generative summaries operate on third-party servers, diluting brand trust and triggering search engine penalties.</p>
+            </div>
+
+            <div class="callout-node phase-2-active">
+              <span class="node-tag">02 // Signed Provenance</span>
+              <p class="node-desc">Value shifts to immutable human judgment. Cryptographically sealed on Armature L1 with ML-DSA-65 signatures.</p>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
     </div>
     
     <a href="#competitor-flow" class="down-arrow" aria-label="Scroll to next section">
@@ -278,13 +1452,46 @@
   </section>
 
   <!-- ================================================================= -->
-  <!-- SLIDE B: B2B COMPETITOR & CLIENT FLOW                             -->
+  <!-- SLIDE B: ASSET B // ECOSYSTEM MAPPING                             -->
   <!-- ================================================================= -->
   <section class="slide" id="competitor-flow">
-    <div class="slide-wrapper">
+    <div class="asset-b-container">
       <div class="slide-meta">Asset B // Ecosystem Mapping</div>
       <h1>Ecosystem Integration Framework</h1>
       <p class="subheadline">Defining the client/vendor dynamics, direct competitors, and platform positioning for Layer 2 entities.</p>
+
+      <div class="matrix-wrapper">
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th>Partner / Competitor</th>
+              <th>KXCO Role</th>
+              <th>Overlapping Competitor</th>
+              <th>Integration Vector</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="entity-col" data-label="Partner / Competitor">Handshakes.ai <span style="font-size: 0.75rem; color: var(--text-muted); display: block; font-weight: 300;">RegTech & ACRA Registry</span></td>
+              <td data-label="KXCO Role"><span class="matrix-pill">DATA VENDOR</span></td>
+              <td data-label="Overlapping Competitor" style="color: var(--text-main);">Cynopsis / Moody's KYC</td>
+              <td data-label="Integration Vector">Injects corporate registry & UBO data directly into Meridian private VDR deal rooms.</td>
+            </tr>
+            <tr>
+              <td class="entity-col" data-label="Partner / Competitor">Niftly <span style="font-size: 0.75rem; color: var(--text-muted); display: block; font-weight: 300;">Stablecoin Economy</span></td>
+              <td data-label="KXCO Role"><span class="matrix-pill">ENTERPRISE CLIENT RAIL</span></td>
+              <td data-label="Overlapping Competitor" style="color: var(--text-main);">Securitize / Fireblocks</td>
+              <td data-label="Integration Vector">Licenses KnightsVault & KnightsPurse L1 wallets to power borderless settlement rails.</td>
+            </tr>
+            <tr>
+              <td class="entity-col" data-label="Partner / Competitor">PRAXIST <span style="font-size: 0.75rem; color: var(--text-muted); display: block; font-weight: 300;">Autonomous ML R&D</span></td>
+              <td data-label="KXCO Role"><span class="matrix-pill">IDENTITY & ATTESTATION</span></td>
+              <td data-label="Overlapping Competitor" style="color: var(--text-main);">Google Antigravity / Claude Code</td>
+              <td data-label="Integration Vector">Provides cryptographically verifiable KXCO IDs & Sentinel security audits to autonomous agents.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     
     <a href="#infrastructure-errors" class="down-arrow" aria-label="Scroll to next section">
@@ -301,13 +1508,44 @@
   </section>
 
   <!-- ================================================================= -->
-  <!-- SLIDE C: CRITICAL INFRASTRUCTURE ERRORS & FIXES                   -->
+  <!-- SLIDE C: ASSET C // SECURITY AUDIT                                -->
   <!-- ================================================================= -->
   <section class="slide" id="infrastructure-errors">
-    <div class="slide-wrapper">
+    <div class="asset-c-container">
       <div class="slide-meta">Asset C // Security Audit</div>
       <h1>Critical System Vulnerabilities</h1>
       <p class="subheadline">Isolating raw search index leaks, active staging portals, and TLD domain fragmentation on KXCO networks.</p>
+
+      <div class="vuln-grid">
+        
+        <div class="vuln-card">
+          <div class="vuln-header">
+            <span class="vuln-badge">01 // Indexed Search Fallback</span>
+            <span class="vuln-endpoint">GOOGLE SEARCH INDEX LEAK</span>
+          </div>
+          <p class="vuln-desc">Google actively indexes browser fallback pages (e.g., "Enable JavaScript to use search" instructions), degrading search authority.</p>
+          <div class="vuln-remediation">MITIGATION: Add 'Disallow: /*?*js=false' to robots.txt immediately</div>
+        </div>
+
+        <div class="vuln-card">
+          <div class="vuln-header">
+            <span class="vuln-badge">02 // Exposed Staging Environment</span>
+            <span class="vuln-endpoint">chain.kxco.ai/wallet/app/register</span>
+          </div>
+          <p class="vuln-desc">Active in-house testing pathways and registration forms are publicly crawlable by commercial search spiders.</p>
+          <div class="vuln-remediation">MITIGATION: Gate dev-servers and registries behind private VPN & IP allowlists</div>
+        </div>
+
+        <div class="vuln-card">
+          <div class="vuln-header">
+            <span class="vuln-badge">03 // TLD Domain Fragmentation</span>
+            <span class="vuln-endpoint">kxco.ai & kxco.io SPLITTING</span>
+          </div>
+          <p class="vuln-desc">Core wallets, chains, and institutional products split insecurely across multiple TLDs, creating phishing exposure.</p>
+          <div class="vuln-remediation">MITIGATION: Consolidate all platforms under secured subfolders of primary domain</div>
+        </div>
+
+      </div>
     </div>
     
     <a href="#video-assets" class="down-arrow" aria-label="Scroll to next section">
@@ -324,13 +1562,62 @@
   </section>
 
   <!-- ================================================================= -->
-  <!-- SLIDE D: CINEMATIC SCREENCAST MATRIX                              -->
+  <!-- SLIDE D: ASSET D // 3-COLUMN CINEMATIC VIDEO SHOWCASE             -->
   <!-- ================================================================= -->
   <section class="slide" id="video-assets">
-    <div class="slide-wrapper">
-      <div class="slide-meta">Asset D // Cinematic Screencasts</div>
-      <h1>The Visual Production Grid</h1>
-      <p class="subheadline">Cinematic screencasts showing live KXCO operations, styled with slow-motion UI zooms and terminal logging overlays.</p>
+    <div class="asset-d-3col">
+      
+      <div class="asset-narrative-bottom">
+        <div class="slide-meta">Asset D // Cinematic Screencasts</div>
+        <h1>Reality in Motion.</h1>
+        <p class="subheadline">High-velocity technical proof engineered for Institutional Capital and AI Architects. Showcasing verifiable on-chain finality and production npm registries.</p>
+      </div>
+
+      <div class="video-player-stage">
+        
+        <div class="iphone-17-frame">
+          <div class="dynamic-island">
+            <div class="sensor"></div>
+            <div class="camera"></div>
+          </div>
+
+          <div class="iphone-video-screen" id="video-wrapper" onclick="togglePlayPause()">
+            <video id="pqc-short-video" style="background: #000000; background-color: #000000;" playsinline loop preload="none" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1080 1920'%3E%3Crect width='100%25' height='100%25' fill='%23000000'/%3E%3C/svg%3E">
+              <source src="KXCO_Short_Web.mp4" type="video/mp4">
+              Your browser does not support HTML5 video.
+            </video>
+
+            <div class="video-control-overlay" id="video-control-overlay">
+              <div class="play-btn-outline" id="play-btn-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+            </div>
+
+            <div class="video-error-msg" id="video-error-msg">
+              NOTE: Open index.html directly from the project directory to load local MP4 video.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="video-proof-points">
+        <div class="proof-item">
+          <span class="proof-tag">01 // 14 NIST-Ready Packages</span>
+          <p class="proof-desc">Public production repositories on npm verifying live ML-DSA-65 post-quantum algorithms.</p>
+        </div>
+        <div class="proof-item">
+          <span class="proof-tag">02 // Quantum Self-Custody</span>
+          <p class="proof-desc">KnightsPurse L1 wallets generating post-quantum keys for autonomous agents & treasuries.</p>
+        </div>
+        <div class="proof-item">
+          <span class="proof-tag">03 // 2.0s Block Finality</span>
+          <p class="proof-desc">Armature L1 block explorer confirming immutable transactions with zero block reorgs.</p>
+        </div>
+      </div>
+
     </div>
     
     <a href="#email-narrative" class="down-arrow" aria-label="Scroll to next section">
@@ -347,13 +1634,47 @@
   </section>
 
   <!-- ================================================================= -->
-  <!-- SLIDE E: EMAIL AUTHENTICATION NARRATIVE (BEC DEFENSE)             -->
+  <!-- SLIDE E: ASSET E // INBOX INTEGRITY                               -->
   <!-- ================================================================= -->
   <section class="slide" id="email-narrative">
-    <div class="slide-wrapper">
-      <div class="slide-meta">Asset E // Inbox Integrity</div>
-      <h1>Zero-Trust Email Routing</h1>
-      <p class="subheadline">Eliminating business email compromise (BEC) through cryptographically signed document notifications.</p>
+    <div class="asset-dual-container">
+      
+      <div class="asset-narrative-bottom">
+        <div class="slide-meta">Asset E // Inbox Integrity</div>
+        <h1>Zero-Trust Email Routing</h1>
+        <p class="subheadline">Eliminating business email compromise (BEC) and wire fraud through cryptographically signed document notifications.</p>
+      </div>
+
+      <div class="asset-content-elevated">
+        <div class="email-flow-stack">
+          
+          <div class="email-flow-card">
+            <div class="flow-card-header">
+              <span class="flow-step-tag">01 // Keyed Email Invitations</span>
+              <span class="flow-status-pill">ML-DSA-65 BOUND</span>
+            </div>
+            <p class="flow-card-desc">Access grants are cryptographically bound directly to the recipient's email address. An invitation issued to an unregistered user secures the on-chain registry entry immediately.</p>
+          </div>
+
+          <div class="email-flow-card">
+            <div class="flow-card-header">
+              <span class="flow-step-tag">02 // Double Opt-In Verification</span>
+              <span class="flow-status-pill">VDR ENFORCED</span>
+            </div>
+            <p class="flow-card-desc">Access to sensitive Meridian virtual data rooms requires full cryptographic ownership verification, rendering domain spoofing and invoice alteration exploits obsolete.</p>
+          </div>
+
+          <div class="email-flow-card">
+            <div class="flow-card-header">
+              <span class="flow-step-tag">03 // Server-Enforced Attestation</span>
+              <span class="flow-status-pill">ARMATURE L1 SIGNED</span>
+            </div>
+            <p class="flow-card-desc">The system blocks all file routes until the user cryptographically signs the server-issued document notice with their unique post-quantum key.</p>
+          </div>
+
+        </div>
+      </div>
+
     </div>
     
     <a href="#migration-calculator" class="down-arrow" aria-label="Scroll to next section">
@@ -370,13 +1691,62 @@
   </section>
 
   <!-- ================================================================= -->
-  <!-- SLIDE F: NIST PQC MIGRATION CALCULATOR                            -->
+  <!-- SLIDE F: ASSET F // INTERACTIVE TOOLS                             -->
   <!-- ================================================================= -->
   <section class="slide" id="migration-calculator">
-    <div class="slide-wrapper">
-      <div class="slide-meta">Asset F // Interactive Tools</div>
-      <h1>Are Your Systems Agility-Proof?</h1>
-      <p class="subheadline">Calculate cryptographic vulnerabilities against NSA CNSA 2.0 and G7 financial sector compliance deadlines.</p>
+    <div class="asset-dual-container">
+      
+      <div class="asset-narrative-bottom">
+        <div class="slide-meta">Asset F // Interactive Tools</div>
+        <h1>Are Your Systems Agility-Proof?</h1>
+        <p class="subheadline">Calculate cryptographic vulnerabilities against NSA CNSA 2.0 and G7 financial sector compliance deadlines.</p>
+      </div>
+
+      <div class="asset-content-elevated">
+        <div class="calc-console">
+          
+          <div class="calc-group">
+            <label class="calc-label" for="calc-tls">01 // Transport Encryption (TLS)</label>
+            <select id="calc-tls" class="calc-select" onchange="runPqcCalculation()">
+              <option value="100">Classic SSL / TLS 1.1 (Broken)</option>
+              <option value="75">Standard TLS 1.2 (Classical RSA)</option>
+              <option value="30" selected>Standard TLS 1.3 (ECDHE)</option>
+              <option value="0">Hybrid Post-Quantum TLS (NIST FIPS-203)</option>
+            </select>
+          </div>
+
+          <div class="calc-group">
+            <label class="calc-label" for="calc-algo">02 // Signing Algorithm</label>
+            <select id="calc-algo" class="calc-select" onchange="runPqcCalculation()">
+              <option value="100" selected>RSA-2048 / ECDSA-P256 (Harvest-Now Vulnerable)</option>
+              <option value="65">RSA-4096 (Extended Classical)</option>
+              <option value="0">ML-DSA-65 / NIST FIPS-204 (Quantum-Safe)</option>
+            </select>
+          </div>
+
+          <div class="calc-group">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <label class="calc-label" for="calc-year" style="margin-bottom:0;">03 // Target Migration Year</label>
+              <span class="calc-year-display" id="calc-year-val">2027</span>
+            </div>
+            <div class="calc-range-wrapper">
+              <input type="range" id="calc-year" class="calc-range" min="2026" max="2035" value="2027" oninput="updateYearAndCalculate(this.value)">
+            </div>
+          </div>
+
+          <div class="calc-result-dial">
+            <div class="dial-meter">
+              <div class="dial-score" id="calc-score">71.5%</div>
+              <div class="dial-status" id="calc-status">HIGH RISK</div>
+            </div>
+            <div class="dial-benchmark" id="calc-benchmark">
+              Exceeds G7 2026 cryptographic agility threshold. Subject to Harvest-Now Decrypt-Later interception.
+            </div>
+          </div>
+
+        </div>
+      </div>
+
     </div>
     
     <a href="#personalized-pitch" class="down-arrow" aria-label="Scroll to next section">
@@ -393,22 +1763,197 @@
   </section>
 
   <!-- ================================================================= -->
-  <!-- SLIDE G: HYPER-PERSONALIZED CLIENT PITCH                          -->
+  <!-- SLIDE G: ASSET G // VISUAL OUTBOUND                               -->
   <!-- ================================================================= -->
   <section class="slide" id="personalized-pitch">
-    <div class="slide-wrapper">
-      <div class="slide-meta">Asset G // Visual Outbound</div>
-      <h1>Single-Screen Trust Simulations</h1>
-      <p class="subheadline">Tailor-engineered client briefs showing real-time threat detection and post-quantum mitigation.</p>
-    </div>
+    <div class="asset-dual-container">
+      
+      <div class="asset-narrative-bottom">
+        <div class="slide-meta">Asset G // Visual Outbound</div>
+        <h1>Single-Screen Trust Simulations</h1>
+        <p class="subheadline">Tailor-engineered client briefs demonstrating real-time threat exposure, dependency audits, and post-quantum mitigation.</p>
+      </div>
 
-    <!-- Final slide agency stamp -->
+      <div class="asset-content-elevated">
+        <div class="sentinel-terminal">
+          
+          <div class="terminal-top">
+            <span class="terminal-title">SENTINEL BASTION AUDIT SIMULATION</span>
+            <span class="terminal-live-dot">READY</span>
+          </div>
+
+          <div class="domain-input-box">
+            <input type="text" class="domain-input" id="sim-domain-input" value="meridian-capital.com" placeholder="Enter target enterprise domain...">
+            <button class="domain-btn" onclick="runSentinelSim()">SCAN</button>
+          </div>
+
+          <div class="sim-output-box" id="sim-log-box">
+            &gt; TARGET: meridian-capital.com<br>
+            &gt; SCANNING PUBLIC API ROUTES...<br>
+            &gt; FOUND: 3 RSA-2048 PKCS#1 v1.5 certificates<br>
+            &gt; <span class="sim-highlight">ALERT: HNDL Exposure Window detected (2026-2030)</span><br>
+            &gt; REMEDIATION: <span class="sim-verified">Deploy ML-DSA-65 with KXCO SDK</span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+    
+    <a href="#proposal-inquiry" class="down-arrow" aria-label="Scroll to next section">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+
     <div class="agency-stamp">
       <span class="logo-line">Goni Agency</span>
       <span>goniagency.com</span>
       <span>© All Rights Reserved</span>
     </div>
   </section>
+
+  <!-- ================================================================= -->
+  <!-- SLIDE H: PROPOSAL INQUIRY (PURE SEAMLESS BACKGROUND)             -->
+  <!-- ================================================================= -->
+  <section class="proposal-slide" id="proposal-inquiry">
+    <div class="proposal-content">
+      <div class="proposal-meta">Goni Agency // Strategic Partnership</div>
+      <h2 class="proposal-title">Request comprehensive GTM Engineering and Ancillary Marketing Proposal</h2>
+      <div class="proposal-links">
+        <a href="mailto:info@goniagency.com" class="proposal-link-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="M22 7l-10 7L2 7"/>
+          </svg>
+          info@goniagency.com
+        </a>
+        <a href="https://goniagency.com" target="_blank" rel="noopener noreferrer" class="proposal-link-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          goniagency.com
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================= -->
+  <!-- CLIENT INTERACTIVE SCRIPTS                                       -->
+  <!-- ================================================================= -->
+  <script>
+    // Slide 0: Typewriter Text Animation
+    const typewriterText = "Preliminary audit examples - site assessment, content optimization , lead magnet generation , business matching";
+    let typewriterIndex = 0;
+
+    function typeWriterEffect() {
+      const outputEl = document.getElementById("typewriter-output");
+      if (!outputEl) return;
+      if (typewriterIndex < typewriterText.length) {
+        outputEl.textContent += typewriterText.charAt(typewriterIndex);
+        typewriterIndex++;
+        setTimeout(typeWriterEffect, 38);
+      }
+    }
+
+    // Video Play/Pause Toggle with Clean State & Error Handling
+    function togglePlayPause() {
+      const vid = document.getElementById('pqc-short-video');
+      const overlay = document.getElementById('video-control-overlay');
+      const icon = document.getElementById('play-btn-icon');
+      const errorMsg = document.getElementById('video-error-msg');
+      
+      if (!vid) return;
+
+      if (vid.paused) {
+        vid.play().then(() => {
+          overlay.classList.add('is-playing');
+          if (errorMsg) errorMsg.style.display = 'none';
+          icon.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+        }).catch(err => {
+          console.warn("Video play error:", err);
+          vid.muted = true;
+          vid.play().then(() => {
+            overlay.classList.add('is-playing');
+          }).catch(e => {
+            console.error("Local file video load issue:", e);
+            if (errorMsg) errorMsg.style.display = 'block';
+          });
+        });
+      } else {
+        vid.pause();
+        overlay.classList.remove('is-playing');
+        icon.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+      }
+    }
+
+    // Asset F: Interactive PQC Migration Calculator Logic
+    function updateYearAndCalculate(val) {
+      document.getElementById('calc-year-val').innerText = val;
+      runPqcCalculation();
+    }
+
+    function runPqcCalculation() {
+      const T = parseFloat(document.getElementById('calc-tls').value);
+      const S = parseFloat(document.getElementById('calc-algo').value);
+      const M = parseFloat(document.getElementById('calc-year').value);
+
+      let V = ((T + S) / 2) * (1 + (M - 2026) / 10);
+      V = Math.min(100, Math.max(0, V));
+
+      const scoreEl = document.getElementById('calc-score');
+      const statusEl = document.getElementById('calc-status');
+      const benchEl = document.getElementById('calc-benchmark');
+
+      if (!scoreEl) return;
+
+      scoreEl.innerText = V.toFixed(1) + '%';
+
+      if (V >= 80) {
+        scoreEl.style.color = '#FF453A';
+        statusEl.style.color = '#FF453A';
+        statusEl.innerText = 'CRITICAL EXPOSURE';
+        benchEl.innerText = 'Immediate cryptographic breach risk. Fails NSA CNSA 2.0 and G7 2026 mandates.';
+      } else if (V >= 50) {
+        scoreEl.style.color = '#FF9F0A';
+        statusEl.style.color = '#FF9F0A';
+        statusEl.innerText = 'HIGH RISK';
+        benchEl.innerText = 'Exceeds G7 agility threshold. Subject to Harvest-Now Decrypt-Later interception.';
+      } else {
+        scoreEl.style.color = '#30D158';
+        statusEl.style.color = '#30D158';
+        statusEl.innerText = 'COMPLIANT / SECURE';
+        benchEl.innerText = 'Quantum-resilient architecture aligned with NIST FIPS-204 standards.';
+      }
+    }
+
+    // Asset G: Sentinel Bastion Simulation Logic
+    function runSentinelSim() {
+      const domain = document.getElementById('sim-domain-input').value.trim() || 'enterprise-target.com';
+      const logBox = document.getElementById('sim-log-box');
+      
+      logBox.innerHTML = `&gt; INITIATING SENTINEL AUDIT ON: ${domain}...<br>&gt; CONNECTING TO PUBLIC REGISTRY...`;
+      
+      setTimeout(() => {
+        logBox.innerHTML += `<br>&gt; RESOLVING TLS/SSL ATTESTATIONS...`;
+      }, 500);
+
+      setTimeout(() => {
+        logBox.innerHTML = `&gt; TARGET: ${domain}<br>` +
+          `&gt; TLS SCAN: Classical ECDSA-P256 endpoints detected<br>` +
+          `&gt; <span class="sim-highlight">VULNERABILITY: Quantum Decryption Exposure &gt; 78%</span><br>` +
+          `&gt; STATUS: <span class="sim-verified">REMEDIATION AVAILABLE VIA KXCO SDK (ML-DSA-65)</span>`;
+      }, 1200);
+    }
+
+    // Document Init
+    document.addEventListener('DOMContentLoaded', () => {
+      typeWriterEffect();
+      runPqcCalculation();
+    });
+  </script>
 
 </body>
 </html>
